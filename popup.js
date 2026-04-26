@@ -56,3 +56,11 @@ renderScreenInfo(screenInfo);
 chrome.action.setBadgeText({ text: "MCE" }, () => {
   console.log("Badge text set to MCE");
 });
+
+const goToOtherPopupBtn = document.getElementById("go-to-other-popup-btn");
+
+goToOtherPopupBtn.addEventListener("click", () => {
+  chrome.action.setPopup({ popup: "other-popup.html" }, () => {
+    console.log("Badge text set to MCE");
+  });
+});

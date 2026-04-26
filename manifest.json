@@ -3,5 +3,20 @@
   "name": "My Chrome Extension",
   "version": "0.0.1",
   "version_name": "0.0.1-dev.1",
-  "description": "This is the description of my Chrome extension."
+  "description": "This is the description of my Chrome extension.",
+  "icons": {
+    "16": "images/icon.png",
+    "32": "images/icon.png",
+    "48": "images/icon.png",
+    "128": "images/icon.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/icon.png",
+      "24": "images/icon.png",
+      "32": "images/icon.png"
+    },
+    "default_title": "My Chrome Extension",
+    "default_popup": "popup.html"
+  }
 }

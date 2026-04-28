@@ -63,17 +63,17 @@ function fetchAnnotatedPages() {
 
       notesContainer.appendChild(notesList);
 
-      chrome.action.setBadgeText({ text: "NOTE" }, () => {
-        console.log("Badge text set to NOTE");
-      });
-      chrome.action.setBadgeBackgroundColor({ color: "#d97706" }, () => {
-        console.log("Badge background color set to #d97706");
-      });
+      // chrome.action.setBadgeText({ text: "NOTE" }, () => {
+      //   console.log("Badge text set to NOTE");
+      // });
+      // chrome.action.setBadgeBackgroundColor({ color: "#d97706" }, () => {
+      //   console.log("Badge background color set to #d97706");
+      // });
     } else {
       notesContainer.appendChild(document.createTextNode("No notes for this page."));
-      chrome.action.setBadgeText({ text: null }, () => {
-        console.log("Badge text set to null");
-      });
+      // chrome.action.setBadgeText({ text: null }, () => {
+      //   console.log("Badge text set to null");
+      // });
     }
 
     updatePageHasNotesIcon();

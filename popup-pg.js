@@ -1,5 +1,3 @@
-const testElement = document.getElementById("test");
-
 const systemInfo = {
   userAgent: navigator.userAgent,
   platform: navigator.platform,
@@ -55,4 +53,10 @@ renderScreenInfo(screenInfo);
 
 chrome.action.setBadgeText({ text: "MCE" }, () => {
   console.log("Badge text set to MCE");
+});
+
+const motdElement = document.getElementById("motd");
+
+chrome.storage.sync.get(["motd"], (res) => {
+  motdElement.textContent = res.motd ?? "no motd";
 });

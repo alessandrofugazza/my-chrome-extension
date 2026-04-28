@@ -14,3 +14,17 @@ pgModeBtn.addEventListener("click", () => {
     popup: "popup-pg.html",
   });
 });
+
+const motdInput = document.getElementById("motd-input");
+const saveMotdBtn = document.getElementById("save-motd-btn");
+
+saveMotdBtn.addEventListener("click", () => {
+  const motd = motdInput.value;
+  chrome.storage.sync.set({
+    motd,
+  });
+});
+
+chrome.storage.sync.get(["motd"], (res) => {
+  motdInput.value = res.motd ?? "no motd";
+});

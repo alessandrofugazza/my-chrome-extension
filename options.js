@@ -1,14 +1,16 @@
-// const productionModeBtn = document.getElementById("production-mode-btn");
-// const pgModeBtn = document.getElementById("pg-mode-btn");
+const productionModeBtn = document.getElementById("production-mode-btn");
+const pgModeBtn = document.getElementById("pg-mode-btn");
 
-// productionModeBtn.addEventListener("click", () => {
-//   chrome.action.setPopup({ popup: "popup.html" }, () => {
-//     console.log("Popup set to production mode");
-//   });
-// });
+productionModeBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({
+    type: "SET_POPUP",
+    popup: "popup.html",
+  });
+});
 
-// pgModeBtn.addEventListener("click", () => {
-//   chrome.action.setPopup({ popup: "popup-pg.html" }, () => {
-//     console.log("Popup set to pg mode");
-//   });
-// });
+pgModeBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({
+    type: "SET_POPUP",
+    popup: "popup-pg.html",
+  });
+});

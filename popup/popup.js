@@ -76,7 +76,7 @@ function fetchAnnotatedPages() {
       // });
     }
 
-    updatePageHasNotesIcon();
+    updatePageHasNotesIcons();
   });
 }
 
@@ -105,7 +105,7 @@ newNoteBtn.addEventListener("click", () => {
 
 const pageHasNotesIcon = document.getElementById("page-has-notes-icon");
 
-function updatePageHasNotesIcon() {
+function updatePageHasNotesIcons() {
   chrome.storage.sync.get(["noteworthyPages"], (res) => {
     console.log("Fetched noteworthy pages:", res.noteworthyPages);
 
@@ -120,8 +120,11 @@ function updatePageHasNotesIcon() {
     pageHasNotesIcon.style.backgroundColor = pageHasNotes ? "green" : "red";
 
     if (pageHasNotes) {
+      chrome.action.setBadgeText({ text: "NOTE" });
+      chrome.action.setBadgeBackgroundColor({ color: "#d97706" });
       console.log("This page has notes");
     } else {
+      chrome.action.setBadgeText({ text: null });
       console.log("This page has NO notes");
     }
   });

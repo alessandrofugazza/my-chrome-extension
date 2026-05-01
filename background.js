@@ -45,3 +45,20 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
     );
   }
 });
+
+chrome.windows.onFocusChanged.addListener(async (windowId) => {
+  if (windowId === chrome.windows.WINDOW_ID_NONE) {
+    return;
+  }
+
+  const [tab] = await chrome.tabs.query({
+    active: true,
+    windowId,
+  });
+
+  if (!tab?.id) return;
+
+  chrome.tabs.sendMessage(tab.id, {
+    type: "chromeWindowFocused",
+  });
+});

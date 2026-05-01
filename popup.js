@@ -44,7 +44,7 @@ function fetchAnnotatedPages() {
 
             entry.notes.splice(index, 1);
 
-            if (entry.notes.length === 0 && entry.done === false) {
+            if (entry.notes.length === 0) {
               delete noteworthyPages[currentUrl];
             } else {
               noteworthyPages[currentUrl] = entry;
@@ -90,7 +90,6 @@ newNoteBtn.addEventListener("click", () => {
     const noteworthyPages = res.noteworthyPages ?? {};
 
     const existingEntry = noteworthyPages[currentUrl] || {
-      done: false,
       notes: [],
     };
 

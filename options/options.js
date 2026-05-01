@@ -4,14 +4,14 @@ const pgModeBtn = document.getElementById("pg-mode-btn");
 productionModeBtn.addEventListener("click", () => {
   chrome.runtime.sendMessage({
     type: "SET_POPUP",
-    popup: "popup.html",
+    popup: "popup/popup.html",
   });
 });
 
 pgModeBtn.addEventListener("click", () => {
   chrome.runtime.sendMessage({
     type: "SET_POPUP",
-    popup: "popup-pg.html",
+    popup: "popup-pg/popup-pg.html",
   });
 });
 

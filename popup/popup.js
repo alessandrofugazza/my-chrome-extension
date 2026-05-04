@@ -82,6 +82,21 @@ function fetchAnnotatedPages() {
 
 const newNoteBtn = document.getElementById("annotate-page-btn");
 
+const newNote = () => {
+  const noteRow = document.createElement("div");
+  const text = document.createElement("input");
+  text.type = "text";
+  text.placeholder = "Enter your note here";
+  const deleteBtn = document.createElement("input");
+  deleteBtn.type = "button";
+  deleteBtn.value = "X";
+
+  noteRow.appendChild(text);
+  noteRow.appendChild(deleteBtn);
+
+  notesContainer.appendChild(noteRow);
+};
+
 newNoteBtn.addEventListener("click", () => {
   const newNote = window.prompt("Enter a value:");
   if (!newNote) return;

@@ -47,18 +47,31 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
 });
 
 chrome.windows.onFocusChanged.addListener(async (windowId) => {
-  if (windowId === chrome.windows.WINDOW_ID_NONE) {
-    return;
-  }
+  if (windowId === chrome.windows.WINDOW_ID_NONE) return;
 
   const [tab] = await chrome.tabs.query({
     active: true,
     windowId,
   });
 
-  if (!tab?.id) return;
+  if (!tab?.id || !tab.url) return;
 
-  chrome.tabs.sendMessage(tab.id, {
-    type: "chromeWindowFocused",
+  // Ignore pages where content scripts cannot run
+  if (
+    tab.url.startsWith("chrome://") ||
+    tab.url.startsWith("edge://") ||
+    tab.url.startsWith("about:") ||
+    tab.url.startsWith("chrome-extension://")
+  ) {
+    return;
+  }
+
+  chrome.tabs.sendMessage(tab.id, { type: "chromeWindowFocused" }, (response) => {
+    if (chrome.runtime.lastError) {
+      console.log("No content script in this tab:", chrome.runtime.lastError.message);
+      return;
+    }
+
+    console.log("Content script response:", response);
   });
 });

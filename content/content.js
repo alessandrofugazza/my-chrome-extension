@@ -21,10 +21,9 @@ function fetchAnnotatedPages() {
   });
 }
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "chromeWindowFocused") {
     fetchAnnotatedPages();
+    sendResponse({ ok: true });
   }
 });
-
-fetchAnnotatedPages();

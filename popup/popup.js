@@ -1,7 +1,5 @@
 let currentUrl = "";
 
-const dNotes = [];
-
 const getUrl = async () => {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   const url = tabs[0]?.url || "";
@@ -15,7 +13,6 @@ const initializePopup = async () => {
 };
 
 const notesContainer = document.getElementById("page-notes-container");
-const dNotesContainer = document.getElementById("d-page-notes-container");
 
 function fetchAnnotatedPages() {
   notesContainer.replaceChildren();
@@ -84,33 +81,6 @@ function fetchAnnotatedPages() {
 }
 
 const newNoteBtn = document.getElementById("annotate-page-btn");
-const dNewNoteBtn = document.getElementById("d-annotate-page-btn");
-
-dNewNoteBtn.addEventListener("click", () => dNewNote());
-
-const dNewNote = () => {
-  const dNotesNum = dNotes.length;
-  dNotes.push("");
-  const dNoteRow = document.createElement("div");
-  const dText = document.createElement("input");
-  dText.type = "text";
-  dText.placeholder = "Enter your note here";
-  dText.addEventListener("change", () => {
-    dNotes[dNotesNum] = dText.value;
-  });
-
-  const dDeleteBtn = document.createElement("input");
-  dDeleteBtn.type = "button";
-  dDeleteBtn.value = "X";
-  dDeleteBtn.addEventListener("click", () => {
-    dNotes.splice(dNotesNum, 1);
-  });
-
-  dNoteRow.appendChild(dText);
-  dNoteRow.appendChild(dDeleteBtn);
-
-  dNotesContainer.appendChild(dNoteRow);
-};
 
 newNoteBtn.addEventListener("click", () => {
   const newNote = window.prompt("Enter a value:");
@@ -161,3 +131,53 @@ function updatePageHasNotesIcons() {
 }
 
 initializePopup();
+
+// develop
+const dNotes = [];
+
+const dNotesContainer = document.getElementById("d-page-notes-container");
+
+const dNewNoteBtn = document.getElementById("d-annotate-page-btn");
+
+dNewNoteBtn.addEventListener("click", () => dNewNote());
+
+const dRenderNote = (dNoteNum) => {
+  const dNoteRow = document.createElement("div");
+  const dText = document.createElement("input");
+  dText.type = "text";
+  dText.placeholder = "Enter your note here";
+  dText.value = dNotes[dNoteNum] ?? "";
+  dText.addEventListener("change", () => {
+    dNotes[dNoteNum] = dText.value;
+  });
+
+  const dDeleteBtn = document.createElement("input");
+  dDeleteBtn.type = "button";
+  dDeleteBtn.value = "X";
+  dDeleteBtn.addEventListener("click", () => {
+    dDeleteNote(dNoteNum);
+  });
+
+  dNoteRow.appendChild(dText);
+  dNoteRow.appendChild(dDeleteBtn);
+
+  dNotesContainer.appendChild(dNoteRow);
+};
+
+const dNewNote = () => {
+  const dNoteNum = dNotes.length;
+  dNotes.push("");
+  dRenderNote(dNoteNum);
+};
+
+const dDeleteNote = (dNoteNum) => {
+  dNotes.splice(dNoteNum, 1);
+  dRenderNotes();
+};
+
+const dRenderNotes = () => {
+  dNotesContainer.replaceChildren();
+  dNotes.forEach((dNoteText, dNoteNum) => {
+    dRenderNote(dNoteNum);
+  });
+};

@@ -46,6 +46,7 @@ const savePageNotes = () => {
       },
     });
   });
+  updatePageHasNotesIcons();
 };
 
 const renderPageNote = (noteNum) => {
@@ -95,28 +96,19 @@ const renderPageNotes = () => {
 const pageHasNotesIcon = document.getElementById("page-has-notes-icon");
 
 function updatePageHasNotesIcons() {
-  chrome.storage.sync.get(["noteworthyPages"], (res) => {
-    console.log("Fetched noteworthy pages:", res.noteworthyPages);
+  const pageHasNotes = pageNotes.length > 0;
 
-    const pages = res.noteworthyPages || {};
-    const entry = pages[currentUrl];
+  pageHasNotesIcon.style.width = "20px";
+  pageHasNotesIcon.style.height = "20px";
+  pageHasNotesIcon.style.borderRadius = "50%";
+  pageHasNotesIcon.style.backgroundColor = pageHasNotes ? "green" : "red";
 
-    const pageHasNotes = entry && Array.isArray(entry.notes) && entry.notes.length > 0;
-
-    pageHasNotesIcon.style.width = "20px";
-    pageHasNotesIcon.style.height = "20px";
-    pageHasNotesIcon.style.borderRadius = "50%";
-    pageHasNotesIcon.style.backgroundColor = pageHasNotes ? "green" : "red";
-
-    if (pageHasNotes) {
-      chrome.action.setBadgeText({ text: "NOTE" });
-      chrome.action.setBadgeBackgroundColor({ color: "#d97706" });
-      console.log("This page has notes");
-    } else {
-      chrome.action.setBadgeText({ text: null });
-      console.log("This page has NO notes");
-    }
-  });
+  if (pageHasNotes) {
+    chrome.action.setBadgeText({ text: "NOTE" });
+    chrome.action.setBadgeBackgroundColor({ color: "#d97706" });
+  } else {
+    chrome.action.setBadgeText({ text: null });
+  }
 }
 
 initializePopup();

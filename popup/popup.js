@@ -93,15 +93,8 @@ const renderPageNotes = () => {
   });
 };
 
-const pageHasNotesIcon = document.getElementById("page-has-notes-icon");
-
 function updatePageHasNotesIcons() {
   const pageHasNotes = pageNotes.length > 0;
-
-  pageHasNotesIcon.style.width = "20px";
-  pageHasNotesIcon.style.height = "20px";
-  pageHasNotesIcon.style.borderRadius = "50%";
-  pageHasNotesIcon.style.backgroundColor = pageHasNotes ? "green" : "red";
 
   if (pageHasNotes) {
     chrome.action.setBadgeText({ text: "NOTE" });

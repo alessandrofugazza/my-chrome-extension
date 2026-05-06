@@ -81,3 +81,5 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
     console.log("Content script response:", response);
   });
 });
+
+// chrome.alarms.create()

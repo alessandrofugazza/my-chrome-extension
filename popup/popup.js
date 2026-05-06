@@ -179,6 +179,7 @@ const dNewNote = () => {
   const dNoteNum = dNotes.length;
   dNotes.push("");
   dRenderNote(dNoteNum);
+  dSaveNotes;
 };
 
 const dDeleteNote = (dNoteNum) => {

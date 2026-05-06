@@ -133,13 +133,23 @@ function updatePageHasNotesIcons() {
 initializePopup();
 
 // develop
-const dNotes = [];
+
+let dNotes = [];
+
+chrome.storage.sync.get(["dNotes"], (res) => {
+  dNotes = res.dNotes ?? [];
+  dRenderNotes();
+});
 
 const dNotesContainer = document.getElementById("d-page-notes-container");
 
 const dNewNoteBtn = document.getElementById("d-annotate-page-btn");
 
 dNewNoteBtn.addEventListener("click", () => dNewNote());
+
+const dSaveNotes = () => {
+  chrome.storage.sync.set({ dNotes });
+};
 
 const dRenderNote = (dNoteNum) => {
   const dNoteRow = document.createElement("div");
@@ -149,6 +159,7 @@ const dRenderNote = (dNoteNum) => {
   dText.value = dNotes[dNoteNum] ?? "";
   dText.addEventListener("change", () => {
     dNotes[dNoteNum] = dText.value;
+    dSaveNotes();
   });
 
   const dDeleteBtn = document.createElement("input");
@@ -173,6 +184,7 @@ const dNewNote = () => {
 const dDeleteNote = (dNoteNum) => {
   dNotes.splice(dNoteNum, 1);
   dRenderNotes();
+  dSaveNotes();
 };
 
 const dRenderNotes = () => {

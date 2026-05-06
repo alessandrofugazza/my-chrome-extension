@@ -82,7 +82,7 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
   });
 });
 
-chrome.alarms.create("checkForInProgressPages", { periodInMinutes: 1 / 6 });
+chrome.alarms.create("checkForInProgressPages", { periodInMinutes: 30 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === "checkForInProgressPages") {

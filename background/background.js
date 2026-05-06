@@ -82,7 +82,10 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
   });
 });
 
-chrome.alarms.create("checkForInProgressPages", { periodInMinutes: 30 });
+chrome.alarms.create("checkForInProgressPages", {
+  delayInMinutes: 0.1,
+  periodInMinutes: 30,
+});
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === "checkForInProgressPages") {
@@ -97,6 +100,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
         iconUrl: chrome.runtime.getURL("images/icon.png"),
         title: "You have in progress pages",
         message: `There ${inProgressPagesNum === 1 ? "is" : "are"} ${inProgressPagesNum} ${inProgressPagesNum === 1 ? "page" : "pages"} marked as in progress.`,
+        requireInteraction: true,
       });
     }
   }

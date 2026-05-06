@@ -12,6 +12,12 @@ const initializePopup = async () => {
   await fetchPageNotes();
   renderPageNotes();
   updatePageHasNotesIcons();
+
+  // make this a function
+  const res = await chrome.storage.sync.get(["inProgressPages"]);
+  const inProgressPages = res.inProgressPages ?? [];
+
+  inProgressCheckbox.checked = inProgressPages.includes(currentUrl);
 };
 
 const pageNotesContainer = document.getElementById("page-notes-container");
@@ -104,67 +110,23 @@ function updatePageHasNotesIcons() {
   }
 }
 
+const inProgressCheckbox = document.getElementById("in-progress-checkbox");
+
+inProgressCheckbox.addEventListener("change", async () => {
+  const res = await chrome.storage.sync.get(["inProgressPages"]);
+  const inProgressPages = res.inProgressPages ?? [];
+
+  let updatedPages;
+
+  if (inProgressCheckbox.checked) {
+    updatedPages = [...new Set([...inProgressPages, currentUrl])];
+  } else {
+    updatedPages = inProgressPages.filter((url) => url !== currentUrl);
+  }
+
+  await chrome.storage.sync.set({
+    inProgressPages: updatedPages,
+  });
+});
+
 initializePopup();
-
-// develop
-
-// let dNotes = [];
-
-// chrome.storage.sync.get(["dNotes"], (res) => {
-//   dNotes = res.dNotes ?? [];
-//   dRenderNotes();
-// });
-
-// const dNotesContainer = document.getElementById("d-page-notes-container");
-
-// const dNewNoteBtn = document.getElementById("d-annotate-page-btn");
-
-// dNewNoteBtn.addEventListener("click", () => dNewNote());
-
-// const dSaveNotes = () => {
-//   chrome.storage.sync.set({ dNotes });
-// };
-
-// const dRenderNote = (dNoteNum) => {
-//   const dNoteRow = document.createElement("div");
-//   const dText = document.createElement("input");
-//   dText.type = "text";
-//   dText.placeholder = "Enter your note here";
-//   dText.value = dNotes[dNoteNum] ?? "";
-//   dText.addEventListener("change", () => {
-//     dNotes[dNoteNum] = dText.value;
-//     dSaveNotes();
-//   });
-
-//   const dDeleteBtn = document.createElement("input");
-//   dDeleteBtn.type = "button";
-//   dDeleteBtn.value = "X";
-//   dDeleteBtn.addEventListener("click", () => {
-//     dDeleteNote(dNoteNum);
-//   });
-
-//   dNoteRow.appendChild(dText);
-//   dNoteRow.appendChild(dDeleteBtn);
-
-//   dNotesContainer.appendChild(dNoteRow);
-// };
-
-// const dNewNote = () => {
-//   const dNoteNum = dNotes.length;
-//   dNotes.push("");
-//   dRenderNote(dNoteNum);
-//   dSaveNotes;
-// };
-
-// const dDeleteNote = (dNoteNum) => {
-//   dNotes.splice(dNoteNum, 1);
-//   dRenderNotes();
-//   dSaveNotes();
-// };
-
-// const dRenderNotes = () => {
-//   dNotesContainer.replaceChildren();
-//   dNotes.forEach((dNoteText, dNoteNum) => {
-//     dRenderNote(dNoteNum);
-//   });
-// };

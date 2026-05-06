@@ -1,5 +1,5 @@
 console.log("damn");
-
+fetchAnnotatedPages();
 chrome.runtime.sendMessage({ type: "pageLoaded" });
 
 function fetchAnnotatedPages() {
@@ -14,7 +14,12 @@ function fetchAnnotatedPages() {
 
     if (noteworthyPages[currentUrl]) {
       chrome.runtime.sendMessage({
-        type: "annotatedPageLoaded",
+        type: "pageHasNotes",
+        url: currentUrl,
+      });
+    } else {
+      chrome.runtime.sendMessage({
+        type: "pageHasNoNotes",
         url: currentUrl,
       });
     }

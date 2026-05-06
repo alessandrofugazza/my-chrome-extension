@@ -18,7 +18,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 chrome.runtime.onMessage.addListener((msg, sender) => {
   console.log("Message received in background:", msg);
-  if (msg?.type === "annotatedPageLoaded") {
+  if (msg?.type === "pageHasNotes") {
     console.log("Fetching annotated pages...");
 
     const tabId = sender?.tab?.id;
@@ -43,6 +43,12 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
         console.log("Notification created:", notificationId);
       },
     );
+  } else if (msg?.type === "pageHasNoNotes") {
+    const tabId = sender?.tab?.id;
+
+    if (tabId != null) {
+      chrome.action.setBadgeText({ tabId, text: "" });
+    }
   }
 });
 

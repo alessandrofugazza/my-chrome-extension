@@ -107,7 +107,7 @@ function updatePageHasNotesIcons() {
     chrome.action.setBadgeText({ text: "NOTE" });
     chrome.action.setBadgeBackgroundColor({ color: "#d97706" });
   } else {
-    chrome.action.setBadgeText({ text: null });
+    chrome.action.setBadgeText({ text: "" });
   }
 }
 

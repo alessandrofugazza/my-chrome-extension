@@ -82,9 +82,17 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
   });
 });
 
-chrome.alarms.create("checkForInProgressPages", {
-  delayInMinutes: 0.1,
-  periodInMinutes: 30,
+chrome.alarms.get("checkForInProgressPages", (alarm) => {
+  if (!alarm) {
+    chrome.alarms.create("checkForInProgressPages", {
+      delayInMinutes: 0.1,
+      periodInMinutes: 30,
+    });
+
+    console.log("Alarm created");
+  } else {
+    console.log("Alarm already exists");
+  }
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {

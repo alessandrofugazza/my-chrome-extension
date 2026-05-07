@@ -28,3 +28,15 @@ saveMotdBtn.addEventListener("click", () => {
 chrome.storage.sync.get(["motd"], (res) => {
   motdInput.value = res.motd ?? "no motd";
 });
+
+const notificationsIntervalInput = document.getElementById("notifications-interval-input");
+const enableNotificationsCheckbox = document.getElementById("enable-notifications-checkbox");
+const saveNotificationsOptionsBtn = document.getElementById("save-notifications-options");
+
+notificationsIntervalInput.addEventListener("change", () => {
+  const interval = parseInt(notificationsIntervalInput.value);
+  if (isNaN(interval) || interval < 1 || interval > 60) {
+    notificationsIntervalInput.value = 30; // Reset to default if invalid
+  }
+  chrome.storage.sync.set({ notificationsInterval: interval });
+});

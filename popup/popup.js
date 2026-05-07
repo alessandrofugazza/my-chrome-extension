@@ -60,11 +60,16 @@ const renderPageNote = (noteNum) => {
   const text = document.createElement("input");
   text.type = "text";
   text.placeholder = "Enter your note here";
-  text.value = pageNotes[noteNum] ?? "";
+  text.value = pageNotes[noteNum].text ?? "";
   text.addEventListener("change", () => {
-    pageNotes[noteNum] = text.value;
+    pageNotes[noteNum].text = text.value;
+    pageNotes[noteNum].date = new Date().toLocaleDateString();
     savePageNotes();
   });
+  const dateSpan = document.createElement("span");
+  dateSpan.textContent = pageNotes[noteNum].date
+    ? new Date(pageNotes[noteNum].date).toLocaleDateString()
+    : new Date().toLocaleDateString();
 
   const deleteBtn = document.createElement("input");
   deleteBtn.type = "button";
@@ -74,6 +79,7 @@ const renderPageNote = (noteNum) => {
   });
 
   noteRow.appendChild(text);
+  noteRow.appendChild(dateSpan);
   noteRow.appendChild(deleteBtn);
 
   pageNotesContainer.appendChild(noteRow);
@@ -81,7 +87,10 @@ const renderPageNote = (noteNum) => {
 
 const newNote = () => {
   const noteNum = pageNotes.length;
-  pageNotes.push("");
+  pageNotes.push({
+    text: "",
+    date: new Date().toLocaleDateString(),
+  });
   renderPageNote(noteNum);
   savePageNotes();
 };

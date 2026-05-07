@@ -99,7 +99,7 @@ const renderPageNotes = () => {
   });
 };
 
-function updatePageHasNotesIcons() {
+const updatePageHasNotesIcons = () => {
   const pageHasNotes = pageNotes.length > 0;
 
   if (pageHasNotes) {
@@ -108,7 +108,7 @@ function updatePageHasNotesIcons() {
   } else {
     chrome.action.setBadgeText({ text: "" });
   }
-}
+};
 
 const inProgressCheckbox = document.getElementById("in-progress-checkbox");
 

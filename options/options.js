@@ -31,7 +31,6 @@ chrome.storage.sync.get(["motd"], (res) => {
 
 const notificationsIntervalInput = document.getElementById("notifications-interval-input");
 const enableNotificationsCheckbox = document.getElementById("enable-notifications-checkbox");
-const saveNotificationsOptionsBtn = document.getElementById("save-notifications-options");
 
 notificationsIntervalInput.addEventListener("change", () => {
   const interval = parseInt(notificationsIntervalInput.value);
@@ -39,4 +38,14 @@ notificationsIntervalInput.addEventListener("change", () => {
     notificationsIntervalInput.value = 30; // Reset to default if invalid
   }
   chrome.storage.sync.set({ notificationsInterval: interval });
+});
+
+enableNotificationsCheckbox.addEventListener("change", () => {
+  const enabled = enableNotificationsCheckbox.checked;
+  chrome.storage.sync.set({ notificationsEnabled: enabled });
+});
+
+chrome.storage.sync.get(["notificationsInterval", "notificationsEnabled"], (res) => {
+  notificationsIntervalInput.value = res.notificationsInterval ?? 30;
+  enableNotificationsCheckbox.checked = res.notificationsEnabled ?? true;
 });

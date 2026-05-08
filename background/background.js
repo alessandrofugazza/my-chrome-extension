@@ -82,34 +82,62 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
   });
 });
 
-chrome.alarms.get("checkForInProgressPages", (alarm) => {
-  if (!alarm) {
-    chrome.alarms.create("checkForInProgressPages", {
-      delayInMinutes: 0.1,
-      periodInMinutes: 30,
-    });
+const ALARM_NAME = "checkForInProgressPages";
+const DEFAULT_INTERVAL = 30;
+const MIN_INTERVAL = 0.5; // Chrome minimum is 30 seconds
 
-    console.log("Alarm created");
-  } else {
-    console.log("Alarm already exists");
+async function syncInProgressPagesAlarm() {
+  const res = await chrome.storage.sync.get(["notificationsEnabled", "notificationsInterval"]);
+
+  const notificationsEnabled = res.notificationsEnabled ?? false;
+  const notificationsInterval = Number(res.notificationsInterval ?? DEFAULT_INTERVAL);
+
+  await chrome.alarms.clear(ALARM_NAME);
+
+  if (!notificationsEnabled) {
+    console.log("Alarm removed: notifications disabled");
+    return;
+  }
+
+  chrome.alarms.create(ALARM_NAME, {
+    delayInMinutes: MIN_INTERVAL,
+    periodInMinutes: Math.max(notificationsInterval, MIN_INTERVAL),
+  });
+
+  console.log("Alarm created/restarted");
+}
+
+// Run when service worker starts
+syncInProgressPagesAlarm();
+
+// Run when options page changes settings
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName !== "sync") return;
+
+  if (changes.notificationsEnabled || changes.notificationsInterval) {
+    syncInProgressPagesAlarm();
   }
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name === "checkForInProgressPages") {
-    const res = await chrome.storage.sync.get(["inProgressPages"]);
-    const inProgressPages = res.inProgressPages ?? [];
+  if (alarm.name !== ALARM_NAME) return;
 
-    const inProgressPagesNum = inProgressPages.length;
+  const res = await chrome.storage.sync.get(["inProgressPages", "notificationsEnabled"]);
 
-    if (inProgressPagesNum > 0) {
-      chrome.notifications.create({
-        type: "basic",
-        iconUrl: chrome.runtime.getURL("images/icon.png"),
-        title: "You have in progress pages",
-        message: `There ${inProgressPagesNum === 1 ? "is" : "are"} ${inProgressPagesNum} ${inProgressPagesNum === 1 ? "page" : "pages"} marked as in progress.`,
-        requireInteraction: true,
-      });
-    }
+  if (!res.notificationsEnabled) return;
+
+  const inProgressPages = res.inProgressPages ?? [];
+  const inProgressPagesNum = inProgressPages.length;
+
+  if (inProgressPagesNum > 0) {
+    chrome.notifications.create({
+      type: "basic",
+      iconUrl: chrome.runtime.getURL("images/icon.png"),
+      title: "You have in progress pages",
+      message: `There ${inProgressPagesNum === 1 ? "is" : "are"} ${inProgressPagesNum} ${
+        inProgressPagesNum === 1 ? "page" : "pages"
+      } marked as in progress.`,
+      requireInteraction: true,
+    });
   }
 });

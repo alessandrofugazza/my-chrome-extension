@@ -40,18 +40,27 @@ newNoteBtn.addEventListener("click", () => newNote());
 const savePageNotes = () => {
   chrome.storage.sync.get(["noteworthyPages"], (res) => {
     const pages = res.noteworthyPages ?? {};
-    const entry = pages[currentUrl] ?? {};
+
+    // clone so we can safely modify
+    const updatedPages = { ...pages };
+
+    if (pageNotes.length === 0) {
+      // remove the entire URL entry
+      delete updatedPages[currentUrl];
+    } else {
+      const entry = updatedPages[currentUrl] ?? {};
+
+      updatedPages[currentUrl] = {
+        ...entry,
+        notes: pageNotes,
+      };
+    }
 
     chrome.storage.sync.set({
-      noteworthyPages: {
-        ...pages,
-        [currentUrl]: {
-          ...entry,
-          notes: pageNotes,
-        },
-      },
+      noteworthyPages: updatedPages,
     });
   });
+
   updatePageHasNotesIcons();
 };
 

@@ -66,10 +66,12 @@ const savePageNotes = () => {
 
 const renderPageNote = (noteNum) => {
   const noteRow = document.createElement("div");
+  noteRow.className = "note-row";
   const text = document.createElement("input");
   text.type = "text";
   text.placeholder = "Enter your note here";
   text.value = pageNotes[noteNum].text ?? "";
+  text.className = "note-text";
   text.addEventListener("change", () => {
     pageNotes[noteNum].text = text.value;
     pageNotes[noteNum].date = new Date().toLocaleDateString();
@@ -79,10 +81,12 @@ const renderPageNote = (noteNum) => {
   dateSpan.textContent = pageNotes[noteNum].date
     ? new Date(pageNotes[noteNum].date).toLocaleDateString()
     : new Date().toLocaleDateString();
+  dateSpan.className = "note-date";
 
   const deleteBtn = document.createElement("input");
   deleteBtn.type = "button";
   deleteBtn.value = "X";
+  deleteBtn.className = "delete-note-btn";
   deleteBtn.addEventListener("click", () => {
     deleteNote(noteNum);
   });

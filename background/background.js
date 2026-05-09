@@ -1,5 +1,3 @@
-console.log("Background script loaded");
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "SET_POPUP") {
     chrome.action.setPopup({ popup: message.popup }, () => {
@@ -104,7 +102,9 @@ async function syncInProgressPagesAlarm() {
     periodInMinutes: Math.max(notificationsInterval, MIN_INTERVAL),
   });
 
-  console.log("Alarm created/restarted");
+  console.log(
+    `Alarm created/restarted with interval: ${Math.max(notificationsInterval, MIN_INTERVAL)} minutes and delay: ${MIN_INTERVAL} minutes`,
+  );
 }
 
 // Run when service worker starts

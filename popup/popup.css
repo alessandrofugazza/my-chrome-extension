@@ -34,3 +34,35 @@ button:hover {
     gap: 0.5rem;
     padding-block: 1rem;
 }
+
+.note-input-text {
+    /* width: 100%;
+    */
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    padding: 0.5em;
+
+}
+
+.note-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.delete-note-btn {
+    cursor: pointer;
+    font-weight: bolder;
+    background-color: #8B0000;
+    outline: none;
+    border: 2px solid white;
+    border-radius: 5px;
+    color: white;
+    /* border: none;
+    border-radius: 5px;
+    outline: none; */
+}
+
+.delete-note-btn:hover {
+    background-color: #FF6347;
+}

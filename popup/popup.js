@@ -71,7 +71,7 @@ const renderPageNote = (noteNum) => {
   text.type = "text";
   text.placeholder = "Enter your note here";
   text.value = pageNotes[noteNum].text ?? "";
-  text.className = "note-text";
+  text.className = "note-input-text";
   text.addEventListener("change", () => {
     pageNotes[noteNum].text = text.value;
     pageNotes[noteNum].date = new Date().toLocaleDateString();

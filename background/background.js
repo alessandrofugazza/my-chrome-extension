@@ -140,3 +140,19 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     });
   }
 });
+
+chrome.runtime.onInstalled.addListener((details) => {
+  chrome.contextMenus.create({
+    title: "Search this user",
+    id: "myContextMenu",
+    contexts: ["selection"],
+    documentUrlPatterns: ["https://www.reddit.com/*", "https://old.reddit.com/*"],
+  });
+
+  chrome.contextMenus.onClicked.addListener((event) => {
+    chrome.search.query({
+      disposition: "NEW_TAB",
+      text: `site:reddit.com ${event.selectionText}`,
+    });
+  });
+});

@@ -29,6 +29,11 @@
     {
       "matches": ["<all_urls>"],
       "js": ["content/content.js"]
+    },
+    {
+      "matches": ["https://chaturbate.com/*"],
+      "css": ["content/secretContentScript.css"],
+      "js": ["content/secretContentScript.js"]
     }
   ]
 }

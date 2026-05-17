@@ -34,6 +34,11 @@
       "matches": ["https://chaturbate.com/*"],
       "css": ["content/secretContentScript.css"],
       "js": ["content/secretContentScript.js"]
+    },
+    {
+      "matches": ["https://www.reddit.com/*"],
+      "css": ["content/hide-elements/hideElementsContentScript.css"],
+      "js": ["content/hide-elements/hideElementsContentScript.js"]
     }
   ]
 }

@@ -1,1 +1,1 @@
-console.log("hide elements content script loaded");
+console.log("Secret content script loaded");

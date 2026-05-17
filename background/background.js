@@ -141,7 +141,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   }
 });
 
-chrome.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     title: "Search this user",
     id: "myContextMenu",
@@ -149,10 +149,29 @@ chrome.runtime.onInstalled.addListener((details) => {
     documentUrlPatterns: ["https://www.reddit.com/*", "https://old.reddit.com/*"],
   });
 
-  chrome.contextMenus.onClicked.addListener((event) => {
+  chrome.contextMenus.create({
+    id: "toggle-video-only",
+    title: "Toggle video only",
+    contexts: ["video", "page", "selection"],
+    documentUrlPatterns: ["https://chaturbate.com/*"],
+  });
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "myContextMenu") {
     chrome.search.query({
       disposition: "NEW_TAB",
-      text: `site:reddit.com ${event.selectionText}`,
+      text: `site:reddit.com ${info.selectionText}`,
     });
-  });
+
+    return;
+  }
+
+  if (info.menuItemId === "toggle-video-only") {
+    chrome.tabs.sendMessage(tab.id, {
+      action: "toggle-video-only",
+    });
+
+    return;
+  }
 });

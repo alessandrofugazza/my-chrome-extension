@@ -29,6 +29,11 @@
     {
       "matches": ["<all_urls>"],
       "js": ["content/content.js"]
+    },
+    {
+      "matches": ["https://www.reddit.com/*"],
+      "css": ["content/hide-elements/hideElementsContentScript.css"],
+      "js": ["content/hide-elements/hideElementsContentScript.js"]
     }
   ]
 }

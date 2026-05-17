@@ -84,38 +84,37 @@ const ALARM_NAME = "checkForInProgressPages";
 const DEFAULT_INTERVAL = 30;
 const MIN_INTERVAL = 0.5; // Chrome minimum is 30 seconds
 
-async function syncInProgressPagesAlarm() {
+async function syncInProgressPagesAlarm({ forceRecreate = false } = {}) {
   const res = await chrome.storage.sync.get(["notificationsEnabled", "notificationsInterval"]);
 
   const notificationsEnabled = res.notificationsEnabled ?? false;
   const notificationsInterval = Number(res.notificationsInterval ?? DEFAULT_INTERVAL);
 
-  await chrome.alarms.clear(ALARM_NAME);
-
   if (!notificationsEnabled) {
-    console.log("Alarm removed: notifications disabled");
+    await chrome.alarms.clear(ALARM_NAME);
     return;
   }
 
+  if (!forceRecreate) {
+    const existingAlarm = await chrome.alarms.get(ALARM_NAME);
+    if (existingAlarm) return; // Already scheduled, don't reset it
+  }
+
+  await chrome.alarms.clear(ALARM_NAME);
   chrome.alarms.create(ALARM_NAME, {
     delayInMinutes: MIN_INTERVAL,
     periodInMinutes: Math.max(notificationsInterval, MIN_INTERVAL),
   });
-
-  console.log(
-    `Alarm created/restarted with interval: ${Math.max(notificationsInterval, MIN_INTERVAL)} minutes and delay: ${MIN_INTERVAL} minutes`,
-  );
 }
 
-// Run when service worker starts
+// On service worker restart: only create if missing
 syncInProgressPagesAlarm();
 
-// Run when options page changes settings
+// On settings change: force recreate with new interval
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName !== "sync") return;
-
   if (changes.notificationsEnabled || changes.notificationsInterval) {
-    syncInProgressPagesAlarm();
+    syncInProgressPagesAlarm({ forceRecreate: true });
   }
 });
 

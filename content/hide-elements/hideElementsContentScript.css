@@ -1,3 +1,10 @@
-shreddit-comment[author="AutoModerator"] {
-    display: none;
+shreddit-comment[author="AutoModerator"],
+#right-sidebar-container {
+    display: none !important;
+}
+
+shreddit-post-text-body>div>div>div,
+div[slot="comment"] {
+    font-size: 1.1rem !important;
+    line-height: 1.6rem !important;
 }

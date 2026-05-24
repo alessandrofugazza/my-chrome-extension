@@ -1,7 +1,7 @@
-fetchAnnotatedPages();
-chrome.runtime.sendMessage({ type: "pageLoaded" });
+// why are we doing this?
+// chrome.runtime.sendMessage({ type: "pageLoaded" });
 
-function fetchAnnotatedPages() {
+const fetchAnnotatedPages = () => {
   const currentUrl = location.href;
 
   chrome.storage.sync.get(["noteworthyPages"], (res) => {
@@ -9,21 +9,22 @@ function fetchAnnotatedPages() {
 
     if (noteworthyPages[currentUrl]) {
       chrome.runtime.sendMessage({
-        type: "pageHasNotes",
+        type: "PAGE_HAS_NOTES",
         url: currentUrl,
       });
     } else {
       chrome.runtime.sendMessage({
-        type: "pageHasNoNotes",
+        type: "PAGE_HAS_NO_NOTES",
         url: currentUrl,
       });
     }
   });
-}
+};
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "chromeWindowFocused") {
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === "WINDOW_WAS_FOCUSED") {
     fetchAnnotatedPages();
-    sendResponse({ ok: true });
   }
 });
+
+fetchAnnotatedPages();

@@ -15,35 +15,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.runtime.onMessage.addListener((msg, sender) => {
-  console.log("Message received in background:", msg);
-  if (msg?.type === "pageHasNotes") {
-    console.log("Fetching annotated pages...");
-
-    const tabId = sender?.tab?.id;
+  const msgType = msg?.type;
+  const tabId = sender?.tab?.id;
+  if (msgType === "PAGE_HAS_NOTES") {
     if (tabId != null) {
       chrome.action.setBadgeText({ tabId, text: "NOTE" });
-      chrome.action.setBadgeBackgroundColor({ tabId, color: "#d97706" }); // optional
+      chrome.action.setBadgeBackgroundColor({ tabId, color: "#d97706" });
     }
 
     chrome.notifications.create(
       {
         type: "basic",
         iconUrl: chrome.runtime.getURL("images/icon.png"),
-        title: "Page annotated",
+        title: "Page has notes",
         message: `Loaded: ${msg.url}`,
       },
-      (notificationId) => {
+      () => {
         if (chrome.runtime.lastError) {
           console.error("Notification error:", chrome.runtime.lastError.message);
           return;
         }
-
-        console.log("Notification created:", notificationId);
       },
     );
-  } else if (msg?.type === "pageHasNoNotes") {
-    const tabId = sender?.tab?.id;
-
+  } else if (msgType === "PAGE_HAS_NO_NOTES") {
     if (tabId != null) {
       chrome.action.setBadgeText({ tabId, text: "" });
     }
@@ -70,15 +64,15 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
     return;
   }
 
-  chrome.tabs.sendMessage(tab.id, { type: "chromeWindowFocused" }, (response) => {
+  chrome.tabs.sendMessage(tab.id, { type: "WINDOW_WAS_FOCUSED" }, () => {
     if (chrome.runtime.lastError) {
       console.log("No content script in this tab:", chrome.runtime.lastError.message);
       return;
     }
-
-    console.log("Content script response:", response);
   });
 });
+
+// IN PROGRESS PAGES NOTIFICATIONS
 
 const ALARM_NAME = "checkForInProgressPages";
 const DEFAULT_INTERVAL = 30;
@@ -119,25 +113,24 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name !== ALARM_NAME) return;
+  if (alarm.name === ALARM_NAME) {
+    if (!res.notificationsEnabled) return;
+    const res = await chrome.storage.sync.get(["inProgressPages", "notificationsEnabled"]);
 
-  const res = await chrome.storage.sync.get(["inProgressPages", "notificationsEnabled"]);
+    const inProgressPages = res.inProgressPages ?? [];
+    const inProgressPagesNum = inProgressPages.length;
 
-  if (!res.notificationsEnabled) return;
-
-  const inProgressPages = res.inProgressPages ?? [];
-  const inProgressPagesNum = inProgressPages.length;
-
-  if (inProgressPagesNum > 0) {
-    chrome.notifications.create({
-      type: "basic",
-      iconUrl: chrome.runtime.getURL("images/icon.png"),
-      title: "You have in progress pages",
-      message: `There ${inProgressPagesNum === 1 ? "is" : "are"} ${inProgressPagesNum} ${
-        inProgressPagesNum === 1 ? "page" : "pages"
-      } marked as in progress.`,
-      requireInteraction: true,
-    });
+    if (inProgressPagesNum > 0) {
+      chrome.notifications.create({
+        type: "basic",
+        iconUrl: chrome.runtime.getURL("images/icon.png"),
+        title: "You have in progress pages",
+        message: `There ${inProgressPagesNum === 1 ? "is" : "are"} ${inProgressPagesNum} ${
+          inProgressPagesNum === 1 ? "page" : "pages"
+        } marked as in progress.`,
+        requireInteraction: true,
+      });
+    }
   }
 });
 

@@ -31,7 +31,7 @@
       "js": ["content/content.js"]
     },
     {
-      "matches": ["https://www.reddit.com/*"],
+      "matches": ["https://www.reddit.com/*", "https://www.coursera.org/*"],
       "css": ["content/hide-elements/hideElementsContentScript.css"],
       "js": ["content/hide-elements/hideElementsContentScript.js"]
     }

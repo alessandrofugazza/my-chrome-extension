@@ -37,8 +37,13 @@
     },
     {
       "matches": ["https://www.reddit.com/*"],
-      "css": ["content/hide-elements/hideElementsContentScript.css"],
-      "js": ["content/hide-elements/hideElementsContentScript.js"]
+      "css": ["content/dom-manipulation/reddit-dom-manipulation/redditDomManipulation.css"],
+      "js": ["content/dom-manipulation/reddit-dom-manipulation/redditDomManipulation.js"]
+    },
+    {
+      "matches": ["https://www.coursera.org/*"],
+      "css": ["content/dom-manipulation/coursera-dom-manipulation/courseraDomManipulation.css"],
+      "js": ["content/dom-manipulation/coursera-dom-manipulation/courseraDomManipulation.js"]
     }
   ]
 }

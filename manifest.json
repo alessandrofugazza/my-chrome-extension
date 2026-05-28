@@ -32,13 +32,18 @@
     },
     {
       "matches": ["https://www.reddit.com/*"],
-      "css": ["content/dom-manipulation/reddit-dom-manipulation/redditDomManipulation.css"],
-      "js": ["content/dom-manipulation/reddit-dom-manipulation/redditDomManipulation.js"]
+      "css": ["dom-manipulation/reddit-dom-manipulation/redditDomManipulation.css"],
+      "js": ["dom-manipulation/reddit-dom-manipulation/redditDomManipulation.js"]
     },
     {
       "matches": ["https://www.coursera.org/*"],
-      "css": ["content/dom-manipulation/coursera-dom-manipulation/courseraDomManipulation.css"],
-      "js": ["content/dom-manipulation/coursera-dom-manipulation/courseraDomManipulation.js"]
+      "css": ["dom-manipulation/coursera-dom-manipulation/courseraDomManipulation.css"],
+      "js": ["dom-manipulation/coursera-dom-manipulation/courseraDomManipulation.js"]
+    },
+    {
+      "matches": ["<all_urls>"],
+      "css": ["video-progress-bar/videoProgressBar.css"],
+      "js": ["video-progress-bar/videoProgressBar.js"]
     }
   ]
 }

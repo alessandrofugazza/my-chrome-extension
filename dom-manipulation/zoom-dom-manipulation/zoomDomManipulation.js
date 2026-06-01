@@ -1,4 +1,4 @@
-console.log("Running Coursera DOM Manipulation script...");
+console.log("Running Zoom DOM Manipulation script...");
 
 function styleSubtitles() {
   document.querySelectorAll(".vjs-text-track-cue").forEach((cue) => {

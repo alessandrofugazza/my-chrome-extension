@@ -135,6 +135,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 });
 
 chrome.runtime.onInstalled.addListener(() => {
+  // CHECK maybe null the storage here?
   chrome.contextMenus.create({
     title: "Search this user",
     id: "myContextMenu",

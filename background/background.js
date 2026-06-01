@@ -138,7 +138,7 @@ chrome.runtime.onInstalled.addListener(() => {
   // CHECK maybe null the storage here?
   chrome.contextMenus.create({
     title: "Search this user",
-    id: "myContextMenu",
+    id: "search-this-user",
     contexts: ["selection"],
     documentUrlPatterns: ["https://www.reddit.com/*", "https://old.reddit.com/*"],
   });
@@ -149,23 +149,33 @@ chrome.runtime.onInstalled.addListener(() => {
     contexts: ["video", "page", "selection"],
     documentUrlPatterns: ["https://chaturbate.com/*"],
   });
+
+  chrome.contextMenus.create({
+    title: "TTS",
+    id: "tts",
+    contexts: ["selection"],
+  });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "myContextMenu") {
-    chrome.search.query({
-      disposition: "NEW_TAB",
-      text: `site:reddit.com ${info.selectionText}`,
-    });
-
-    return;
-  }
-
-  if (info.menuItemId === "toggle-video-only") {
-    chrome.tabs.sendMessage(tab.id, {
-      action: "toggle-video-only",
-    });
-
-    return;
+  switch (info.menuItemId) {
+    case "search-this-user":
+      chrome.search.query({
+        disposition: "NEW_TAB",
+        text: `site:reddit.com ${info.selectionText}`,
+      });
+      break;
+    case "toggle-video-only":
+      chrome.tabs.sendMessage(tab.id, {
+        action: "toggle-video-only",
+      });
+      break;
+    case "tts":
+      (chrome.tts.speak(info.selectionText),
+        {
+          lang: "en-US",
+          rate: 2.0,
+        });
+      break;
   }
 });

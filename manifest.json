@@ -23,7 +23,17 @@
   "background": {
     "service_worker": "background/background.js"
   },
-  "permissions": ["storage", "alarms", "notifications", "scripting", "activeTab", "contextMenus", "search", "tabs"],
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "scripting",
+    "activeTab",
+    "contextMenus",
+    "search",
+    "tabs",
+    "tts"
+  ],
   "host_permissions": ["<all_urls>"],
   "content_scripts": [
     {

@@ -14,10 +14,12 @@ const initializePopup = async () => {
   updatePageHasNotesIcons();
 
   // make this a function
-  const res = await chrome.storage.sync.get(["inProgressPages"]);
+  const res = await chrome.storage.sync.get(["inProgressPages", "donePages"]);
   const inProgressPages = res.inProgressPages ?? [];
+  const donePages = res.donePages ?? [];
 
   inProgressCheckbox.checked = inProgressPages.includes(currentUrl);
+  isDoneCb.checked = donePages.includes(currentUrl);
 };
 
 const pageNotesContainer = document.getElementById("page-notes-container");
@@ -148,6 +150,25 @@ inProgressCheckbox.addEventListener("change", async () => {
 
   await chrome.storage.sync.set({
     inProgressPages: updatedPages,
+  });
+});
+
+const isDoneCb = document.getElementById("is-done-cb");
+
+isDoneCb.addEventListener("change", async () => {
+  const res = await chrome.storage.sync.get(["donePages"]);
+  const donePages = res.donePages ?? [];
+
+  let updatedPages;
+
+  if (isDoneCb.checked) {
+    updatedPages = [...new Set([...donePages, currentUrl])];
+  } else {
+    updatedPages = donePages.filter((url) => url !== currentUrl);
+  }
+
+  await chrome.storage.sync.set({
+    donePages: updatedPages,
   });
 });
 

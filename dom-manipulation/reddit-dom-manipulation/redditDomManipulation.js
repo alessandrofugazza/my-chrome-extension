@@ -16,17 +16,11 @@ function updateHiddenProfileText() {
 
   const redditSearchUrl = `https://www.google.com/search?q=` + encodeURIComponent(`site:reddit.com ${username}`);
 
-  emptyFeedText.innerHTML = `
-    ${username} can suck a dick, but you can <br>
-    <br>
-    <a
-      href="${redditSearchUrl}"
-      target="_blank"
-      style="color:#4f8cff;"
-    >
-      Search user on Reddit
-    </a>
-  `;
+  emptyFeedText.innerHTML = `${username} can suck a dick, but you can <a
+  href="${redditSearchUrl}"
+  target="_blank"
+  style="color:#4f8cff;"
+>search this fucker on Google</a>.`;
 }
 
 updateHiddenProfileText();

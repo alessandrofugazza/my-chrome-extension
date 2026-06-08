@@ -1,5 +1,8 @@
-shreddit-comment[author="AutoModerator"],
+/* shreddit-comment[author="AutoModerator"],
 #right-sidebar-container {
+    display: none !important;
+} */
+shreddit-comment[author="AutoModerator"] {
     display: none !important;
 }
 

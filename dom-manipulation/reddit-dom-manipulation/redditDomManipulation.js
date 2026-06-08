@@ -14,7 +14,7 @@ function updateHiddenProfileText() {
   const username = match[1]
   const cleanUsername = username.replace('u/', '')
 
-  const redditSearchUrl = `https://www.google.com/search?q=` + encodeURIComponent(`site:reddit.com ${username}`)
+  const redditSearchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(`"${cleanUsername}" site:reddit.com`)
 
   emptyFeedText.innerHTML = `${username} can suck a dick, but you can<br><a
   href="${redditSearchUrl}"

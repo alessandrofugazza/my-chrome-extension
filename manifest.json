@@ -59,11 +59,11 @@
       "matches": ["https://us02web.zoom.us/*"],
       "css": ["dom-manipulation/zoom-dom-manipulation/zoomDomManipulation.css"],
       "js": ["dom-manipulation/zoom-dom-manipulation/zoomDomManipulation.js"]
-    },
-    {
-      "matches": ["<all_urls>"],
-      "css": ["video-progress-bar/videoProgressBar.css"],
-      "js": ["video-progress-bar/videoProgressBar.js"]
     }
+    // {
+    //   "matches": ["<all_urls>"],
+    //   "css": ["video-progress-bar/videoProgressBar.css"],
+    //   "js": ["video-progress-bar/videoProgressBar.js"]
+    // }
   ]
 }
